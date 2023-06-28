@@ -2,6 +2,11 @@ package main
 
 import "fmt"
 
+// Mediator 描述了具体同事之间通信的接口
+type Mediator interface {
+	Communicate(who string)
+}
+
 // 同事类接口
 type Colleague interface {
 	SetMediator(mediator Mediator)
@@ -45,11 +50,6 @@ func (t *ConcreteColleague2) Respond() {
 	fmt.Println("具体同事2：ConcreteColleague2回复中...")
 }
 
-// Mediator 描述了具体同事之间通信的接口
-type Mediator interface {
-	Communicate(who string)
-}
-
 // ConcreateMediator 描述了 ConcreteColleague1 和 ConcreteColleague2 之间的中介
 type ConcreteMediator struct {
 	ConcreteColleague1
@@ -78,4 +78,5 @@ func (m *ConcreteMediator) Communicate(who string) {
 func main() {
 	mediator := NewMediator()
 	mediator.ConcreteColleague2.Talk()
+	mediator.ConcreteColleague1.Respond()
 }

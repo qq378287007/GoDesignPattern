@@ -2,14 +2,6 @@ package main
 
 import "fmt"
 
-type Button struct {
-	Command Command
-}
-
-func (b *Button) Press() {
-	b.Command.Execute()
-}
-
 type Command interface {
 	Execute()
 }
@@ -17,6 +9,14 @@ type Command interface {
 type Device interface {
 	On()
 	Off()
+}
+
+type Button struct {
+	Command Command
+}
+
+func (b *Button) Press() {
+	b.Command.Execute()
 }
 
 type Light struct {
@@ -54,26 +54,16 @@ func main() {
 	Light := &Light{}
 
 	//发送打开命令
-	onCommand := &OnCommand{
-		Device: Light,
-	}
-
-	//发送关闭命令
-	offCommand := &OffCommand{
-		Device: Light,
-	}
-
+	onCommand := &OnCommand{Device: Light}
 	//接收打开命令
-	onButton := &Button{
-		Command: onCommand,
-	}
+	onButton := &Button{Command: onCommand}
 	//按打开命令键
 	onButton.Press()
 
+	//发送关闭命令
+	offCommand := &OffCommand{Device: Light}
 	//接收关闭命令
-	offButton := &Button{
-		Command: offCommand,
-	}
+	offButton := &Button{Command: offCommand}
 	//按关闭命令键
 	offButton.Press()
 }

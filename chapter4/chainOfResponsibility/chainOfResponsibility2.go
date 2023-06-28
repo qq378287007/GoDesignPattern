@@ -2,6 +2,19 @@ package main
 
 import "fmt"
 
+type Patient struct {
+	Name              string
+	RegistrationDone  bool
+	ClinicCheckUpDone bool
+	MedicineDone      bool
+	PaymentDone       bool
+}
+
+type department interface {
+	Execute(*Patient)
+	SetNext(department)
+}
+
 type Cashier struct {
 	next department
 }
@@ -15,11 +28,6 @@ func (c *Cashier) Execute(p *Patient) {
 
 func (c *Cashier) SetNext(next department) {
 	c.next = next
-}
-
-type department interface {
-	Execute(*Patient)
-	SetNext(department)
 }
 
 type Clinic struct {
@@ -58,14 +66,6 @@ func (m *Drugstore) Execute(p *Patient) {
 
 func (m *Drugstore) SetNext(next department) {
 	m.next = next
-}
-
-type Patient struct {
-	Name              string
-	RegistrationDone  bool
-	ClinicCheckUpDone bool
-	MedicineDone      bool
-	PaymentDone       bool
 }
 
 type Reception struct {

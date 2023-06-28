@@ -20,6 +20,11 @@ func NewBaseHandler(name string, next Handler, handleID int) Handler {
 	return &BaseHandler{name, next, handleID}
 }
 
+// 设置下一个处理者
+func (h *BaseHandler) SetNext(handler Handler) {
+	h.next = handler
+}
+
 // Handle 处理给定的 handleID
 func (h *BaseHandler) Handle(handleID int) int {
 	if handleID < 4 {
@@ -36,11 +41,6 @@ func (h *BaseHandler) Handle(handleID int) int {
 	return 0
 }
 
-// 设置下一个处理者
-func (h *BaseHandler) SetNext(handler Handler) {
-	h.next = handler
-}
-
 //具体处理者
 type ConcreteHandler struct {
 }
@@ -53,7 +53,7 @@ func (ch *ConcreteHandler) Handle(handleID int) {
 func main() {
 	barry := NewBaseHandler("Barry", nil, 1)
 	shirdon := NewBaseHandler("Shirdon", barry, 2)
-	jack := NewBaseHandler("Shirdon", shirdon, 3)
+	jack := NewBaseHandler("Jack", shirdon, 3)
 
 	res := shirdon.Handle(2)
 	fmt.Println(res)

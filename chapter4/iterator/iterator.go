@@ -25,9 +25,7 @@ type ConcreteCollection struct {
 
 // 初始化具体集合对象，用于创建具体迭代器对象
 func (u *ConcreteCollection) CreateIterator() Iterator {
-	return &ConcreteIterator{
-		IterationState: true,
-	}
+	return &ConcreteIterator{IterationState: true}
 }
 
 // 具体迭代器
@@ -37,11 +35,7 @@ type ConcreteIterator struct {
 
 // 具体迭代器的方法
 func (i *ConcreteIterator) HasMore() bool {
-	if i.IterationState == true {
-		return true
-	} else {
-		return false
-	}
+	return i.IterationState
 }
 
 // 具体迭代器的方法，用于递增迭代器以指向下一个元素

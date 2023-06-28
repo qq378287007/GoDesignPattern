@@ -2,6 +2,17 @@ package main
 
 import "fmt"
 
+type Train interface {
+	Arrive()
+	Depart()
+	PermitArrival()
+}
+
+type Mediator interface {
+	CanArrive(Train) bool
+	NotifyAboutDeparture()
+}
+
 //货运列车类
 type FreightTrain struct {
 	Mediator Mediator
@@ -26,11 +37,6 @@ func (g *FreightTrain) Depart() {
 func (g *FreightTrain) PermitArrival() {
 	fmt.Println("FreightTrain: Arrival permitted")
 	g.Arrive()
-}
-
-type Mediator interface {
-	CanArrive(Train) bool
-	NotifyAboutDeparture()
 }
 
 //客运火车类
@@ -65,9 +71,7 @@ type StationManager struct {
 }
 
 func NewStationManger() *StationManager {
-	return &StationManager{
-		isPlatformFree: true,
-	}
+	return &StationManager{isPlatformFree: true}
 }
 
 func (s *StationManager) CanArrive(t Train) bool {
@@ -90,24 +94,15 @@ func (s *StationManager) NotifyAboutDeparture() {
 	}
 }
 
-type Train interface {
-	Arrive()
-	Depart()
-	PermitArrival()
-}
-
 func main() {
 	//声明具体中介者
 	stationManager := NewStationManger()
 
 	//声明客运火车
-	passengerTrain := &PassengerTrain{
-		Mediator: stationManager,
-	}
+	passengerTrain := &PassengerTrain{Mediator: stationManager}
+
 	//声明货运火车
-	freightTrain := &FreightTrain{
-		Mediator: stationManager,
-	}
+	freightTrain := &FreightTrain{Mediator: stationManager}
 
 	passengerTrain.Arrive()
 	freightTrain.Arrive()

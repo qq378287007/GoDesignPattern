@@ -2,8 +2,9 @@ package main
 
 import "fmt"
 
-type Collection interface {
-	CreateIterator() Iterator
+type User struct {
+	Name string
+	Age  int
 }
 
 type Iterator interface {
@@ -11,19 +12,8 @@ type Iterator interface {
 	GetNext() *User
 }
 
-type User struct {
-	Name string
-	Age  int
-}
-
-type UserCollection struct {
-	Users []*User
-}
-
-func (u *UserCollection) CreateIterator() Iterator {
-	return &UserIterator{
-		Users: u.Users,
-	}
+type Collection interface {
+	CreateIterator() Iterator
 }
 
 type UserIterator struct {
@@ -38,6 +28,7 @@ func (u *UserIterator) HasNext() bool {
 	return false
 
 }
+
 func (u *UserIterator) GetNext() *User {
 	if u.HasNext() {
 		user := u.Users[u.Index]
@@ -47,8 +38,15 @@ func (u *UserIterator) GetNext() *User {
 	return nil
 }
 
-func main() {
+type UserCollection struct {
+	Users []*User
+}
 
+func (u *UserCollection) CreateIterator() Iterator {
+	return &UserIterator{Users: u.Users}
+}
+
+func main() {
 	//声明用户对象User1
 	user1 := &User{
 		Name: "Jack",
@@ -61,9 +59,7 @@ func main() {
 	}
 
 	//声明具体集合对象
-	userCollection := &UserCollection{
-		Users: []*User{user1, user2},
-	}
+	userCollection := &UserCollection{Users: []*User{user1, user2}}
 
 	//声明具体迭代器对象
 	iterator := userCollection.CreateIterator()
