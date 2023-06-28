@@ -1,15 +1,4 @@
-//++++++++++++++++++++++++++++++++++++++++
-// 《Go语言设计模式》源码
-//++++++++++++++++++++++++++++++++++++++++
-// Author:廖显东（ShirDon）
-// Blog:https://www.shirdon.com/
-// 作者知乎：https://www.zhihu.com/people/shirdonl
-// 仓库地址：https://gitee.com/shirdonl/goDesignPattern
-// 仓库地址：https://github.com/shirdonl/goDesignPattern
-// 交流咨询，请关注公众号"源码大数据"
-//++++++++++++++++++++++++++++++++++++++++
-
-package example
+package main
 
 import "fmt"
 
@@ -59,4 +48,18 @@ type ConcreteHandler struct {
 //具体处理者的处理方法
 func (ch *ConcreteHandler) Handle(handleID int) {
 	fmt.Println("ConcreteHandler handleID:", handleID)
+}
+
+func main() {
+	barry := NewBaseHandler("Barry", nil, 1)
+	shirdon := NewBaseHandler("Shirdon", barry, 2)
+	jack := NewBaseHandler("Shirdon", shirdon, 3)
+
+	res := shirdon.Handle(2)
+	fmt.Println(res)
+
+	fmt.Println()
+
+	res1 := jack.Handle(3)
+	fmt.Println(res1)
 }

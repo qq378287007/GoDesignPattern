@@ -1,15 +1,4 @@
-//++++++++++++++++++++++++++++++++++++++++
-// 《Go语言设计模式》源码
-//++++++++++++++++++++++++++++++++++++++++
-// Author:廖显东（ShirDon）
-// Blog:https://www.shirdon.com/
-// 作者知乎：https://www.zhihu.com/people/shirdonl
-// 仓库地址：https://gitee.com/shirdonl/goDesignPattern
-// 仓库地址：https://github.com/shirdonl/goDesignPattern
-// 交流咨询，请关注公众号"源码大数据"
-//++++++++++++++++++++++++++++++++++++++++
-
-package example
+package main
 
 import (
 	"fmt"
@@ -25,16 +14,16 @@ type Iterator interface {
 	GetNext()
 }
 
-//集合接口
+// 集合接口
 type Collection interface {
 	CreateIterator() Iterator
 }
 
-//具体集合
+// 具体集合
 type ConcreteCollection struct {
 }
 
-//初始化具体集合对象，用于创建具体迭代器对象
+// 初始化具体集合对象，用于创建具体迭代器对象
 func (u *ConcreteCollection) CreateIterator() Iterator {
 	return &ConcreteIterator{
 		IterationState: true,
@@ -46,7 +35,7 @@ type ConcreteIterator struct {
 	IterationState bool
 }
 
-//具体迭代器的方法
+// 具体迭代器的方法
 func (i *ConcreteIterator) HasMore() bool {
 	if i.IterationState == true {
 		return true
@@ -55,10 +44,22 @@ func (i *ConcreteIterator) HasMore() bool {
 	}
 }
 
-//具体迭代器的方法，用于递增迭代器以指向下一个元素
+// 具体迭代器的方法，用于递增迭代器以指向下一个元素
 func (i *ConcreteIterator) GetNext() {
 	if i.HasMore() {
 		time.Sleep(1 * time.Second)
 		fmt.Println("GetNext")
+	}
+}
+func main() {
+	//声明具体集合对象
+	concreteCollection := &ConcreteCollection{}
+
+	//声明具体迭代器对象
+	iterator := concreteCollection.CreateIterator()
+
+	//执行具体方法
+	for iterator.HasMore() {
+		iterator.GetNext()
 	}
 }

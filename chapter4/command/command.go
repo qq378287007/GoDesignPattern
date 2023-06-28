@@ -1,19 +1,6 @@
-//++++++++++++++++++++++++++++++++++++++++
-// 《Go语言设计模式》源码
-//++++++++++++++++++++++++++++++++++++++++
-// Author:廖显东（ShirDon）
-// Blog:https://www.shirdon.com/
-// 作者知乎：https://www.zhihu.com/people/shirdonl
-// 仓库地址：https://gitee.com/shirdonl/goDesignPattern
-// 仓库地址：https://github.com/shirdonl/goDesignPattern
-// 交流咨询，请关注公众号"源码大数据"
-//++++++++++++++++++++++++++++++++++++++++
+package main
 
-package example
-
-import (
-	"fmt"
-)
+import "fmt"
 
 type Command interface {
 	Execute()
@@ -96,4 +83,19 @@ func NewCommand2(name string, receiverObj *Receiver) *Command2 {
 //具体命令2执行操作
 func (c *Command2) Execute() {
 	c.receiver.operation2(c.name, c.name, c.name)
+}
+
+func main() {
+	//创建接收者
+	receiver := NewReceiver()
+
+	//创建具体命令对象，如有需要可将其关联至接收者
+	cmd1 := NewCommand1("commandA", receiver)
+	cmd2 := NewCommand2("commandB", receiver)
+
+	cc := NewInvoker()
+	cc.SetCommand(cmd1)
+	cc.SetCommand(cmd2)
+	//执行命令
+	cc.ExecuteCommand()
 }
